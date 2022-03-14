@@ -7,7 +7,7 @@ export default class CoursesController {
     return course
   }
 
-  public async getID({ params, response }) {
+  public async getID({ params, response }: HttpContextContract) {
     const course = await Database.from('onlinecourse').where('id', params.id)
     if (course[0] == null) {
       return response.notFound({ message: `id:${params.id} not found` })
@@ -16,14 +16,14 @@ export default class CoursesController {
     }
   }
 
-  public async insert({ request, response }) {
-    const data = request.requestData
+  public async insert({ request, response }: HttpContextContract) {
+    const data: any = request.requestData
     const course = await Database.table('onlinecourse').insert(data)
     return response.ok({ id: `${course}`, data: data })
   }
 
-  public async update({ params, request, response }) {
-    const data = request.requestData
+  public async update({ params, request, response }: HttpContextContract) {
+    const data: any = request.requestData
     const course = await Database.from('onlinecourse').where('id', params.id).update(data)
     if (!course) {
       return response.notFound({ message: `can't update id:${params.id} because id not found` })
@@ -32,7 +32,7 @@ export default class CoursesController {
     }
   }
 
-  public async delete({ params, response }) {
+  public async delete({ params, response }: HttpContextContract) {
     const courseDeleteID = await Database.from('onlinecourse').where('id', params.id)
     const course = await Database.from('onlinecourse').where('id', params.id).delete()
     if (!course) {
